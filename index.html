@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Just Us</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="login" class="login-screen">
+    <div class="login-card">
+      <div class="logo-wrap">
+        <div class="logo-mark">JU</div>
+        <div>
+          <h1>Just Us</h1>
+          <p>Private rooms for calls, snaps and chats.</p>
+        </div>
+      </div>
+      <label>Your name</label>
+      <input id="nameInput" placeholder="Your name" />
+      <label>Room code</label>
+      <input id="roomInput" placeholder="Create or paste room code" />
+      <label>Room password</label>
+      <input id="passwordInput" placeholder="Required to join" type="password" />
+      <div class="login-actions">
+        <button id="createRoomBtn" class="primary">Create room</button>
+        <button id="joinRoomBtn">Join room</button>
+      </div>
+      <p class="fine-print">Invite links only fill the room code. Your friend must enter the password.</p>
+    </div>
+  </div>
+
+  <div class="app-shell">
+    <aside class="rail">
+      <div class="rail-logo"><span>JU</span><b>Just Us</b></div>
+      <button id="micBtn" class="icon-btn" data-label="Mic"><span>🎙</span><b>Mic</b></button>
+      <button id="camBtn" class="icon-btn" data-label="Camera"><span>▣</span><b>Camera</b></button>
+      <button id="screenBtn" class="icon-btn" data-label="Share screen"><span>▤</span><b>Share</b></button>
+      <button id="snapBtn" class="icon-btn" data-label="Send snap"><span>●</span><b>Snap</b></button>
+      <button id="inviteBtn" class="icon-btn" data-label="Copy invite"><span>↗</span><b>Invite</b></button>
+      <button id="chatBtn" class="icon-btn" data-label="Chat"><span>◧</span><b>Chat</b><em id="badge">0</em></button>
+      <button id="leaveBtn" class="icon-btn danger" data-label="Leave"><span>⏻</span><b>Leave</b></button>
+    </aside>
+
+    <main class="main-area">
+      <header class="topbar">
+        <div>
+          <h2 id="roomTitle">Not connected</h2>
+          <p id="statusText">Create or join a room to start.</p>
+        </div>
+        <div class="invite-chip" id="inviteText">No invite yet</div>
+      </header>
+
+      <section class="stage-layout">
+        <div class="stage-card">
+          <div class="stage-header">
+            <span>Live room</span>
+            <span id="memberCount">0 / 20</span>
+          </div>
+          <div id="videoGrid" class="video-grid">
+            <div class="empty-state">Enable camera or screen share to broadcast to everyone.</div>
+          </div>
+        </div>
+        <div class="side-card">
+          <h3>Participants</h3>
+          <ul id="peopleList" class="people-list"></ul>
+          <h3>Private / snap recipient</h3>
+          <select id="recipientSelect"><option value="all">Everyone</option></select>
+          <div class="snap-panel">
+            <button id="snapUploadBtn" class="primary wide">Send disappearing media</button>
+            <input id="snapInput" type="file" accept="image/*,video/*,audio/*" hidden />
+            <p>Photos, videos and audio appear temporarily like a snap. They are not shown with a download button.</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <section id="chatDrawer" class="chat-drawer">
+      <div class="drawer-head">
+        <div><strong>Chat</strong><small id="chatRoomLabel">No room</small></div>
+        <button id="closeChatBtn">×</button>
+      </div>
+      <div id="messages" class="messages"></div>
+      <form id="messageForm" class="message-form">
+        <input id="messageInput" placeholder="Message..." autocomplete="off" />
+        <button class="primary">Send</button>
+      </form>
+    </section>
+
+    <div id="snapViewer" class="snap-viewer hidden">
+      <div class="snap-viewer-card">
+        <div class="snap-meta"><span id="snapFrom"></span><span id="snapTimer"></span></div>
+        <div id="snapContent" class="snap-content"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
