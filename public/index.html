@@ -1,84 +1,100 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Just Us is a private room app for friends to chat, call, screen share, share files and watch together." />
-  <meta name="robots" content="index,follow" />
-  <title>Just Us | Private Rooms</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Just Us</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <div id="loginScreen" class="login-screen">
+  <div id="login" class="login-screen">
     <div class="login-card">
       <div class="logo-wrap">
-        <div class="logo-mark"><span>JU</span></div>
-        <div><h1>Just Us</h1><p>Private rooms for calls, chat, screen sharing and files</p></div>
+        <div class="logo-mark">JU</div>
+        <div>
+          <h1>Just Us</h1>
+          <p>Private rooms for calls, snaps and chats.</p>
+        </div>
       </div>
       <label>Your name</label>
-      <input id="nameInput" maxlength="32" placeholder="Enter your name" />
-      <label id="roomLabelInput">Room code</label>
-      <input id="roomInput" maxlength="64" placeholder="Create or paste room code" />
+      <input id="nameInput" placeholder="Your name" />
+      <label>Room code</label>
+      <input id="roomInput" placeholder="Create or paste room code" />
       <label>Room password</label>
-      <input id="passwordInput" type="password" maxlength="100" placeholder="Enter room password" />
+      <input id="passwordInput" placeholder="Required to join" type="password" />
       <div class="login-actions">
         <button id="createRoomBtn" class="primary">Create room</button>
-        <button id="joinRoomBtn">Join</button>
+        <button id="joinRoomBtn">Join room</button>
       </div>
-      <p class="subtle">Invite links contain the room code only. Your friend will be asked for the password.</p>
+      <p class="fine-print">Invite links only fill the room code. Your friend must enter the password.</p>
     </div>
   </div>
 
   <div class="app-shell">
-    <main class="meet-main">
+    <aside class="rail">
+      <div class="rail-logo"><span>JU</span><b>Just Us</b></div>
+      <button id="micBtn" class="icon-btn" data-label="Mic"><span>🎙</span><b>Mic</b></button>
+      <button id="camBtn" class="icon-btn" data-label="Camera"><span>▣</span><b>Camera</b></button>
+      <button id="screenBtn" class="icon-btn" data-label="Share screen"><span>▤</span><b>Share</b></button>
+      <button id="snapBtn" class="icon-btn" data-label="Send snap"><span>●</span><b>Snap</b></button>
+      <button id="inviteBtn" class="icon-btn" data-label="Copy invite"><span>↗</span><b>Invite</b></button>
+      <button id="chatBtn" class="icon-btn" data-label="Chat"><span>◧</span><b>Chat</b><em id="badge">0</em></button>
+      <button id="leaveBtn" class="icon-btn danger" data-label="Leave"><span>⏻</span><b>Leave</b></button>
+    </aside>
+
+    <main class="main-area">
       <header class="topbar">
-        <div class="title-block">
-          <div class="logo-mark mini"><span>JU</span></div>
-          <div><h2 id="roomTitle">Just Us</h2><p id="roomLabel">Create or join a private room</p></div>
+        <div>
+          <h2 id="roomTitle">Not connected</h2>
+          <p id="statusText">Create or join a room to start.</p>
         </div>
-        <button id="copyInviteBtn" class="invite-button">Copy invite</button>
+        <div class="invite-chip" id="inviteText">No invite yet</div>
       </header>
 
-      <section class="stage-wrap">
-        <div id="videos" class="video-grid"><div class="empty-state">Join a room, then turn on camera or share screen.</div></div>
-      </section>
-
-      <aside class="meet-controls" aria-label="Meeting controls">
-        <div class="control-box">
-          <button id="notifyBtn" class="control-btn" title="Notifications"><span class="control-icon">N</span><span class="control-label">Notifications</span></button>
-          <button id="cameraBtn" class="control-btn primary" title="Camera"><span class="control-icon">C</span><span class="control-label">Start camera</span></button>
-          <button id="screenBtn" class="control-btn" title="Share screen"><span class="control-icon">S</span><span class="control-label">Share screen</span></button>
-          <button id="videoToggleBtn" class="control-btn" title="Video on/off"><span class="control-icon">V</span><span class="control-label">Video off</span></button>
-          <button id="muteBtn" class="control-btn" title="Mute mic"><span class="control-icon">M</span><span class="control-label">Mute mic</span></button>
-          <button id="speakerBtn" class="control-btn" title="Enable audio"><span class="control-icon">A</span><span class="control-label">Enable audio</span></button>
-          <button id="stopMediaBtn" class="control-btn" title="Stop sharing"><span class="control-icon">X</span><span class="control-label">Stop media</span></button>
-          <button id="leaveBtn" class="control-btn danger" title="Leave"><span class="control-icon">L</span><span class="control-label">Leave room</span></button>
+      <section class="stage-layout">
+        <div class="stage-card">
+          <div class="stage-header">
+            <span>Live room</span>
+            <span id="memberCount">0 / 20</span>
+          </div>
+          <div id="videoGrid" class="video-grid">
+            <div class="empty-state">Enable camera or screen share to broadcast to everyone.</div>
+          </div>
         </div>
-      </aside>
-
-      <button id="chatToggle" class="chat-fab" aria-label="Open chat"><span>Chat</span><b id="chatBadge">0</b></button>
-
-      <aside id="chatDrawer" class="chat-drawer">
-        <div class="drawer-head"><div><strong>Messages</strong><p id="chatRoomLabel">No room</p></div><button id="chatClose" class="ghost">Close</button></div>
-        <div class="chat-tools">
+        <div class="side-card">
+          <h3>Participants</h3>
+          <ul id="peopleList" class="people-list"></ul>
+          <h3>Private / snap recipient</h3>
           <select id="recipientSelect"><option value="all">Everyone</option></select>
-          <label class="encrypt-line"><input type="checkbox" id="encryptToggle" /> Private encrypted text</label>
-          <input id="secretInput" type="password" placeholder="Secret key for encrypted private text" />
+          <div class="snap-panel">
+            <button id="snapUploadBtn" class="primary wide">Send disappearing media</button>
+            <input id="snapInput" type="file" accept="image/*,video/*,audio/*" hidden />
+            <p>Photos, videos and audio appear temporarily like a snap. They are not shown with a download button.</p>
+          </div>
         </div>
-        <div id="messages" class="messages"></div>
-        <form id="messageForm" class="message-form"><button id="fileBtn" type="button" title="Share file">File</button><input id="fileInput" type="file" hidden multiple /><input id="messageInput" maxlength="1500" placeholder="Message..." /><button class="primary" type="submit">Send</button></form>
-        <p class="file-note">Send photos, videos, audio and files to everyone or one selected person. Max 20 MB per file.</p>
-      </aside>
+      </section>
     </main>
 
-    <aside class="right-panel">
-      <div class="profile-card"><div class="avatar" id="myAvatar">ME</div><div><strong id="profileName">Not joined</strong><p id="statusText">Offline</p></div></div>
-      <div class="info-card"><strong>Invite link</strong><p id="inviteText">Join a room first.</p><small>Send the password separately.</small></div>
-      <div class="info-card people-card"><div class="card-header"><strong>People</strong><span id="memberCount">0 / 20</span></div><ul id="peopleList"></ul></div>
-      <div class="info-card watch-card"><div class="card-header"><strong>Watch together</strong><span>YouTube/Vimeo</span></div><div class="watch-tools"><input id="watchInput" placeholder="Paste video link" /><button id="loadWatchBtn" class="primary">Share</button></div><div id="watchArea" class="watch-area">For Instagram or blocked sites, share your screen.</div></div>
-      <div class="note">For best sound, use headphones. Local preview is muted to reduce echo. Click Enable audio if a browser blocks remote sound.</div>
-    </aside>
+    <section id="chatDrawer" class="chat-drawer">
+      <div class="drawer-head">
+        <div><strong>Chat</strong><small id="chatRoomLabel">No room</small></div>
+        <button id="closeChatBtn">×</button>
+      </div>
+      <div id="messages" class="messages"></div>
+      <form id="messageForm" class="message-form">
+        <input id="messageInput" placeholder="Message..." autocomplete="off" />
+        <button class="primary">Send</button>
+      </form>
+    </section>
+
+    <div id="snapViewer" class="snap-viewer hidden">
+      <div class="snap-viewer-card">
+        <div class="snap-meta"><span id="snapFrom"></span><span id="snapTimer"></span></div>
+        <div id="snapContent" class="snap-content"></div>
+      </div>
+    </div>
   </div>
+
   <script src="/socket.io/socket.io.js"></script>
   <script src="app.js"></script>
 </body>
